@@ -133,3 +133,5 @@ Desktop.ini
 
 ### my ignores ######
 #/src/main/resources/application.properties
+/src/main/resources/html-template/
+/src/main/resources/static/
