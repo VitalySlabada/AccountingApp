@@ -1,4 +1,5 @@
 package com.example.accountingapp.entity;
+import com.example.accountingapp.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,9 @@ public class User extends BaseEntity {
     private String email;
     private String password;
     private String phone;
-    private boolean enabled;
+    private Boolean enabled;
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
     @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
     @ManyToOne(fetch = FetchType.LAZY)

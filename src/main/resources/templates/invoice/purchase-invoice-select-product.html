@@ -18,8 +18,8 @@
                 <section class="users-list-wrapper">
                     <!-- PURCHASE INVOICE LIST LINK -->
                     <div class="users-list-filter px-2">
-                        <form action="#" data-th-action="@{/invoice/invoiceListLink/{id}(id=${invoice.getInvoiceNo()})}"
-                              method="post">
+<!--                        <form action="#" data-th-action="@{/invoice/invoiceListLink/{id}(id=${invoice.getInvoiceNo()})}"-->
+                        <form>
                             <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
                                 <button class="btn btn-primary bg-light-primary mb-1"
                                         type="submit" name="action" value="cancel">
@@ -39,7 +39,7 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <!-- INVOICE PART BEGIN-->
-                                                <form class="needs-validation" novalidate>
+                                                <form class="needs-validation" novalidate >
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
@@ -65,7 +65,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                 <label>Vendor</label>
-                                                                <a type="text"
+                                                                <a th:text="${invoiceDTO.companyName}"
                                                                        class="form-control" readonly aria-invalid="false"></a>
                                                                 </div>
                                                             </div>
@@ -73,16 +73,17 @@
                                                     </div>
                                                     <!-- INVOICE PART END -->
                                                     <!-- INVOICE PRODUCT PART BEGIN -->
-                                                    <div  class="needs-validation" novalidate>
+                                                    <div  class="needs-validation" novalidate th:object="${invoiceProductDTO}">
                                                         <div class="row">
                                                             <div class="col-12 col-md-3">
                                                                 <div class="form-group">
                                                                     <div class="controls">
                                                                         <label>Product</label>
-                                                                        <select
-                                                                                class="custom-select" required="required">
-                                                                            <option ></option>
-                                                                            <option
+                                                                        <select class="custom-select" required="required" th:field="*{name}"  >
+                                                                            <option th:value="' '" th:text="Select" ></option>
+                                                                            <option th:each="product: ${products}"
+                                                                                    th:text="${product.name}"
+                                                                                    th:value="${product.name}"
                                                                             ></option>
                                                                         </select>
                                                                     </div>
@@ -90,30 +91,31 @@
                                                             </div>
                                                             <div class="col-12 col-md-3">
                                                                 <div class="form-group">
-                                                                    <div class="controls">
+                                                                    <div class="controls" th:field="*{qty}">
                                                                         <label>Quantity</label>
                                                                         <input type="text"
-                                                                               class="form-control" disabled
-                                                                               required aria-invalid="false">
+                                                                               class="form-control"
+                                                                               required aria-invalid="false"
+                                                                        >
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-12 col-md-3">
                                                                 <div class="form-group">
-                                                                    <div class="controls">
+                                                                    <div class="controls" th:field="*{price}">
                                                                         <label>Price</label>
                                                                         <input type="text"
-                                                                               class="form-control" disabled
+                                                                               class="form-control"
                                                                                required aria-invalid="false">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-12 col-md-3">
                                                                 <div class="form-group">
-                                                                    <div class="controls">
+                                                                    <div class="controls" th:field="*{tax}">
                                                                         <label>Tax</label>
                                                                         <input type="text"
-                                                                               class="form-control" disabled
+                                                                               class="form-control"
                                                                                required aria-invalid="false">
                                                                     </div>
                                                                 </div>
@@ -148,8 +150,12 @@
                                                                         <td ></td>
                                                                         <td ></td>
                                                                         <td>
-                                                                            <form method="post"
-                                                                                  data-th-action="@{/invoice/removeItemFromInvoice/{id}(id=${invoiceProduct.getId()})}">
+<!--td                                                                            <form method="post"-->
+<!--                                                                                  data-th-action="@{/invoice/removeItemFromInvoice/{id}(id=${invoiceProduct.getId()})}">-->
+<!--                                                                                <button class="ft-minus btn-primary bg-light-primary" type="submit"></button>-->
+<!--                                                                            </form>              -->
+                                                                            <form method="post">
+<!--                                                                                  data-th-action="@{/invoice/removeItemFromInvoice/{id}(id=${invoiceProduct.getId()})}">-->
                                                                                 <button class="ft-minus btn-primary bg-light-primary" type="submit"></button>
                                                                             </form>
                                                                         </td>
@@ -161,7 +167,9 @@
                                                     </div>
                                                 <!-- INVOICE PRODUCT LIST END-->
                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-                                                    <form action="#" data-th-action="@{/invoice/cancelOrSave/{id}(id=${invoice.getInvoiceNo()})}"
+<!--                                                    <form action="#" data-th-action="@{/invoice/cancelOrSave/{id}(id=${invoice.getInvoiceNo()})}"-->
+<!--                                                          method="post">-->
+                                                    <form action="#"
                                                           method="post">
                                                         <button
                                                                 class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
