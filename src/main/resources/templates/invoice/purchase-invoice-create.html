@@ -39,8 +39,7 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <!-- INVOICE PART BEGIN-->
-                                                <form class="needs-validation" novalidate
-                                                      th:action="@{/invoice/purchaseInvoiceSelectProduct}" th:object="${invoiceDTO}">
+                                                <form class="needs-validation" novalidate th:action="@{/invoice/purchaseInvoiceCreate/{id}(id=${invoiceDTO.getId()})}" method="post" th:object="${invoiceDTO}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                         </div>
@@ -58,25 +57,39 @@
                                                                                 th:value="${vendor.companyName}"
                                                                         ></option>
                                                                     </select>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-                                                            <button type="submit" name="action" value="SelectCompany"
-                                                                    class="btn btn-warning mb-2 mb-sm-0 mr-sm-2">Select
-                                                                Company
-                                                            </button>
+                                                    </div>
+                                                    <!-- INVOICE PART END -->
+                                                    <div class="needs-validation" novalidate>
+                                                        <div class="row">
+                                                            <div class="col-12 col-md-3">
+                                                            </div>
+                                                            <div class="col-12 col-md-3">
+                                                            </div>
+                                                            <div class="col-12 col-md-3">
+                                                            </div>
+                                                            <div class="col-12 col-md-3">
+                                                            </div>
+                                                            <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                                <button type="submit" name="action" value="addItem"
+                                                                        class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
+                                                                        >Select Company
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-
-                                                        <form
-                                                                method="post">
-                                                            <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
-                                                                    type="submit" name="action" value="cancel">Cancel
-                                                            </button>
-                                                        </form>
-                                                    </div>
+                                                </form>
+                                                <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                    <form action="#"
+                                                          th:action="@{/invoice/purchaseInvoiceList}">
+                                                        <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
+                                                                type="submit" name="action" value="cancel">Cancel
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

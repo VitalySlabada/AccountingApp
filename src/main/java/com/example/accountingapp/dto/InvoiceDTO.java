@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -44,7 +43,11 @@ public class InvoiceDTO {
 
     private List<InvoiceProductDTO> invoiceProductList;
 
-    private String companyName;
+    private Long invoiceNo;
+
+    private ProductDTO product;
+
+    public String companyName;
 
 
 }
