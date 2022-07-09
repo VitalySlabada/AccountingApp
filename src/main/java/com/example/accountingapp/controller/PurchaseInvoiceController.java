@@ -50,10 +50,18 @@ public class PurchaseInvoiceController {
         invoiceService.enableInvoice(id);
         return "redirect:/invoice/purchaseInvoiceList";
     }
+    @GetMapping("/editPurchaseInvoiceSelectProduct/{id}")
+    public String editPurchaseInvoiceSelectProduct (@PathVariable("id") Long id) {
+
+        invoiceProductService.disableInvoiceProductsByInvoiceId(id);
+        return "redirect:/invoice/purchaseInvoiceSelectProduct/" + id;
+    }
+
+
 
     @GetMapping("/purchaseInvoiceCreate")
     public String purchaseInvoiceCreate(Model model) {
-        // TODO Vitaly Bahrom for new ID
+        // TODO Vitaly Bahrom for new ID _ test
         InvoiceDTO invoiceDTO = new InvoiceDTO();
         invoiceDTO.setInvoiceType(InvoiceType.PURCHASE);
         Long id = invoiceService.saveAndReturnId(invoiceDTO);
@@ -74,11 +82,11 @@ public class PurchaseInvoiceController {
         InvoiceDTO invoiceDTO = invoiceService.getInvoiceDTOById(id);
         model.addAttribute("id", id);
         model.addAttribute("invoiceDTO", invoiceDTO);
-        model.addAttribute("companyName", invoiceDTO.getCompany().getTitle());
+        model.addAttribute("companyName", invoiceDTO.getClientVendor().getCompanyName());
         model.addAttribute("date", invoiceService.getLocalDate());
         model.addAttribute("invoiceId", invoiceService.getNextInvoiceIdPurchase());
         model.addAttribute("invoiceProductDTO", new InvoiceProductDTO());
-        model.addAttribute("products", invoiceProductService.findAllProductsByCompanyName(invoiceDTO.getCompany().getTitle()));
+        model.addAttribute("products", invoiceProductService.findAllProductsByCompanyName(invoiceDTO.getClientVendor().getCompanyName()));
         model.addAttribute("invoiceProducts", invoiceProductService.findAllInvoiceProductsByInvoiceId(id));
         return "invoice/purchase-invoice-select-product";
     }
@@ -116,6 +124,7 @@ public class PurchaseInvoiceController {
     @PostMapping ("/approvePurchaseInvoice/{id}")
     public String approvePurchaseInvoiceById(@PathVariable("id") Long id){
         invoiceService.approvePurchaseInvoice(id);
+        invoiceService.addProductToStockByInvoice(id);
         return "redirect:/invoice/purchaseInvoiceList";
     }
 

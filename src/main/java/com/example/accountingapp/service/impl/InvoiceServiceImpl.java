@@ -1,17 +1,12 @@
-package com.example.accountingapp.service.impl;
+package com.example.accountingapp.service.Impl;
 
 import com.example.accountingapp.dto.InvoiceDTO;
 import com.example.accountingapp.dto.InvoiceProductDTO;
-import com.example.accountingapp.entity.Invoice;
-import com.example.accountingapp.entity.InvoiceProduct;
-import com.example.accountingapp.entity.Product;
+import com.example.accountingapp.entity.*;
 import com.example.accountingapp.enums.InvoiceStatus;
 import com.example.accountingapp.enums.InvoiceType;
 import com.example.accountingapp.mapper.MapperUtil;
-import com.example.accountingapp.repository.CompanyRepository;
-import com.example.accountingapp.repository.InvoiceProductRepository;
-import com.example.accountingapp.repository.InvoiceRepository;
-import com.example.accountingapp.repository.ProductRepository;
+import com.example.accountingapp.repository.*;
 import com.example.accountingapp.service.InvoiceService;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +16,11 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
-
-import com.example.accountingapp.entity.Company;
 
 import java.util.Optional;
 
@@ -39,14 +33,17 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceProductRepository invoiceProductRepository;
     private final CompanyRepository companyRepository;
     private final ProductRepository productRepository;
+    private final StockDetailsRepository stockDetailsRepository;
+    private final ClientVendorRepository clientVendorRepository;
 
-
-    public InvoiceServiceImpl(MapperUtil mapperUtil, InvoiceRepository invoiceRepository, InvoiceProductRepository invoiceProductRepository, CompanyRepository companyRepository, ProductRepository productRepository) {
+    public InvoiceServiceImpl(MapperUtil mapperUtil, InvoiceRepository invoiceRepository, InvoiceProductRepository invoiceProductRepository, CompanyRepository companyRepository, ProductRepository productRepository, StockDetailsRepository stockDetailsRepository, ClientVendorRepository clientVendorRepository) {
         this.mapperUtil = mapperUtil;
         this.invoiceRepository = invoiceRepository;
         this.invoiceProductRepository = invoiceProductRepository;
         this.companyRepository = companyRepository;
         this.productRepository = productRepository;
+        this.stockDetailsRepository = stockDetailsRepository;
+        this.clientVendorRepository = clientVendorRepository;
     }
 
     @Override
@@ -108,26 +105,25 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<InvoiceDTO> listAllByInvoiceType(InvoiceType invoiceType) {
         //map invoiceProduct of each Invoice -> DTO
-        List<InvoiceDTO> listDTO = invoiceRepository.findAllByInvoiceType(invoiceType)
-                .stream()
-                .filter(Invoice::isEnabled)
-                .map(p -> mapperUtil.convert(p, new InvoiceDTO())).collect(Collectors.toList());
+        List<InvoiceDTO> listInvoiceDTO = invoiceRepository.findAllByInvoiceType(invoiceType)
+                .stream().filter(Invoice::isEnabled).map(p -> mapperUtil.convert(p, new InvoiceDTO())).collect(Collectors.toList());
 
         //map all invoice products from invoice to invoiceProduct DTO
-        for (InvoiceDTO each : listDTO) {
+        for (InvoiceDTO each : listInvoiceDTO) {
             List<InvoiceProductDTO> invoiceProductDTOList = invoiceProductRepository.findAllByInvoiceId(each.getId())
                     .stream()
+                    .filter(InvoiceProduct::isEnabled)
                     .map(p -> mapperUtil.convert(p, new InvoiceProductDTO()))
                     .collect(Collectors.toList());
             each.setInvoiceProductList(invoiceProductDTOList);
         }
 
         //set cost
-        listDTO.forEach(p -> p.setCost((calculateCostByInvoiceID(p.getId())).setScale(2, RoundingMode.CEILING)));
+        listInvoiceDTO.forEach(p -> p.setCost((calculateCostByInvoiceID(p.getId())).setScale(2, RoundingMode.CEILING)));
 
         //set tax
         if (invoiceType == InvoiceType.PURCHASE) {
-            for (InvoiceDTO eachInvoiceDTO : listDTO) {
+            for (InvoiceDTO eachInvoiceDTO : listInvoiceDTO) {
                 BigDecimal totalTax = BigDecimal.valueOf(0);
                 for (InvoiceProductDTO each : eachInvoiceDTO.getInvoiceProductList()) {
                     totalTax = totalTax.add(each.getPrice().multiply(BigDecimal.valueOf(each.getQty())).multiply(each.getTax()).divide(BigDecimal.valueOf(100)));
@@ -135,18 +131,20 @@ public class InvoiceServiceImpl implements InvoiceService {
                 eachInvoiceDTO.setTax(totalTax.setScale(2, RoundingMode.CEILING));
             }
         } else {   //todo Vitaly Bahrom - set tax
-            listDTO.forEach(p -> p.setTax((p.getCost().multiply(BigDecimal.valueOf(0.07))).setScale(2, RoundingMode.CEILING)));
+            listInvoiceDTO.forEach(p -> p.setTax((p.getCost().multiply(BigDecimal.valueOf(0.07))).setScale(2, RoundingMode.CEILING)));
         }
 
         //set total
-        listDTO.forEach(p -> p.setTotal(((p.getCost()).add(p.getTax())).setScale(2, RoundingMode.CEILING)));
-        return listDTO;
+        listInvoiceDTO.forEach(p -> p.setTotal(((p.getCost()).add(p.getTax())).setScale(2, RoundingMode.CEILING)));
+        return listInvoiceDTO;
     }
 
 
     @Override
     public BigDecimal calculateCostByInvoiceID(Long id) {
-        List<InvoiceProductDTO> invoiceProductListById = invoiceProductRepository.findAllByInvoiceId(id).stream().map(p -> mapperUtil.convert(p, new InvoiceProductDTO())).collect(Collectors.toList());
+        List<InvoiceProductDTO> invoiceProductListById = invoiceProductRepository.findAllByInvoiceId(id)
+                .stream().filter(p -> p.isEnabled())
+                .map(p -> mapperUtil.convert(p, new InvoiceProductDTO())).collect(Collectors.toList());
         BigDecimal cost = BigDecimal.valueOf(0);
         for (InvoiceProductDTO each : invoiceProductListById) {
             BigDecimal currItemCost = each.getPrice().multiply(BigDecimal.valueOf(each.getQty()));
@@ -164,8 +162,15 @@ public class InvoiceServiceImpl implements InvoiceService {
     //Method for default invoice settings upon creation
     @Override
     public InvoiceDTO save(InvoiceDTO invoiceDTO) {
+
+
         Invoice invoice = mapperUtil.convert(invoiceDTO, new Invoice());
-        String invoiceNumber = getNextInvoiceIdPurchase();
+        String invoiceNumber = "";
+        if (invoiceDTO.getInvoiceType().equals(InvoiceType.SALE)) {
+            invoiceNumber = getNextInvoiceIdSale();
+        } else {
+            invoiceNumber = getNextInvoiceIdPurchase();
+        }
         invoice.setInvoiceNumber(invoiceNumber);
         invoice.setInvoiceDate(LocalDate.now());
         invoice.setInvoiceStatus(InvoiceStatus.PENDING);
@@ -174,13 +179,12 @@ public class InvoiceServiceImpl implements InvoiceService {
         return mapperUtil.convert(invoice, new InvoiceDTO());
     }
 
-
     @Override
     public void updateInvoiceCompany(InvoiceDTO dto) {
         Optional<Invoice> invoice = invoiceRepository.findById(dto.getId());
         if (invoice.isPresent()) {
-            Company company = companyRepository.findByTitle(dto.getCompanyName()).get();
-            invoice.get().setCompany(company);
+            ClientVendor clientVendor = clientVendorRepository.findByCompanyName(dto.getCompanyName()).get();
+            invoice.get().setClientVendor(clientVendor);
             invoiceRepository.save(invoice.get());
         }
     }
@@ -193,6 +197,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void enableInvoice(Long id) {
         Invoice invoice = invoiceRepository.findById(id).get();
+        // set status enabled for all product invoices in the list
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findAllByInvoiceId(id);
+        for (InvoiceProduct eachInvoiceProduct : invoiceProductList) {
+            eachInvoiceProduct.setEnabled(true);
+        }
         invoice.setEnabled(true);
         invoiceRepository.save(invoice);
     }
@@ -201,17 +210,41 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void approvePurchaseInvoice(Long id) {
         List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findAllByInvoiceId(id);
         for (InvoiceProduct eachInvoiceProduct : invoiceProductList) {
+            //update stock
             Long productId = eachInvoiceProduct.getProduct().getId();
             Integer additionalQty = eachInvoiceProduct.getQty();
             Product product = productRepository.findProductById(productId).get();
             product.setQty(product.getQty().add(BigInteger.valueOf(additionalQty)));
             productRepository.save(product);
         }
+        //change status of invoice -> approved
         Invoice invoice = invoiceRepository.findById(id).get();
         invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
         invoiceRepository.save(invoice);
 
     }
 
+    @Override
+    public void addProductToStockByInvoice(Long id) {
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findAllByInvoiceId(id);
 
+        for (InvoiceProduct eachInvoiceProduct : invoiceProductList) {
+            StockDetails stockDetails = new StockDetails();
+            stockDetails.setProduct(eachInvoiceProduct.getProduct());
+            stockDetails.setPrice(eachInvoiceProduct.getTax().add(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100)).multiply(eachInvoiceProduct.getPrice()));
+            stockDetails.setQuantity(BigInteger.valueOf(eachInvoiceProduct.getQty()));
+            stockDetails.setRemainingQuantity(BigInteger.valueOf(eachInvoiceProduct.getQty()));
+            stockDetails.setIDate(LocalDateTime.now());
+            stockDetailsRepository.save(stockDetails);
+
+//            BigInteger remainingQtyAfter = BigInteger.ZERO;
+//            for (StockDetails each : stockDetailsRepository.findAllByProductId(eachInvoiceProduct.getProduct().getId())) {
+//                remainingQtyAfter = remainingQtyAfter.add(each.getQuantity());
+//            }
+//            for (StockDetails each : stockDetailsRepository.findAllByProductId(eachInvoiceProduct.getProduct().getId())) {
+//                each.setRemainingQuantity(remainingQtyAfter);
+//                stockDetailsRepository.save(each);
+//            }
+        }
+    }
 }

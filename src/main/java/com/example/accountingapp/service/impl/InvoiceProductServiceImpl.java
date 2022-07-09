@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 
@@ -47,11 +46,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
     @Override
     public List<ProductDTO> findAllProductsByCompanyName(String companyName) {
-        //find company ID
-        Long companyId = companyRepository.findByTitle(companyName).get().getId();
-        //get all products that this company sells
-        List<Product> productList = productRepository.findAllByCompanyId(companyId);
-        //map to DTO
+        List<Product> productList = productRepository.findAllProductsByCompanyName(companyName);
         List<ProductDTO> productDTOList= productList.stream()
                 .map(p->mapperUtil.convert(p,new ProductDTO()))
                 .collect(Collectors.toList());
@@ -103,10 +98,12 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
 
     @Override
-    public InvoiceProductDTO getByInvoiceId(Long invoiceId) {
+    public List<InvoiceProductDTO> getByInvoiceId(Long invoiceId) {
 
-        InvoiceProductDTO invoiceProductDTO = mapperUtil.convert(invoiceProductRepository.getByInvoiceId(invoiceId),new InvoiceProductDTO());
-
+        List<InvoiceProductDTO> invoiceProductDTO = invoiceProductRepository.findAllByInvoiceId(invoiceId)
+                .stream()
+//                .filter(Invoice::isEnabled)
+                .map(p -> mapperUtil.convert(p, new InvoiceProductDTO())).collect(Collectors.toList());
         return invoiceProductDTO;
     }
 
@@ -118,6 +115,15 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     @Override
     public List<InvoiceProductDTO> findAllByInvoiceId(Long id) {
         return null;
+    }
+
+    @Override
+    public void disableInvoiceProductsByInvoiceId(Long id) {
+        List<InvoiceProduct> invoiceProductList = invoiceProductRepository.findAllByInvoiceId(id);
+        for (InvoiceProduct each : invoiceProductList) {
+            each.setEnabled(false);
+            invoiceProductRepository.save(each);
+        }
     }
 
 }
