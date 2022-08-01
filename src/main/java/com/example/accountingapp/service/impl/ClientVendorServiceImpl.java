@@ -1,11 +1,13 @@
 package com.example.accountingapp.service.impl;
 
 import com.example.accountingapp.dto.ClientVendorDTO;
+import com.example.accountingapp.entity.User;
 import com.example.accountingapp.enums.CompanyType;
 import com.example.accountingapp.entity.ClientVendor;
 import com.example.accountingapp.mapper.MapperUtil;
 import com.example.accountingapp.repository.ClientVendorRepository;
 import com.example.accountingapp.service.ClientVendorService;
+import com.example.accountingapp.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,15 +18,18 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     private final ClientVendorRepository clientVendorRepository;
     private final MapperUtil mapperUtil;
+    private final UserService userService;
 
-    public ClientVendorServiceImpl(ClientVendorRepository clientVendorRepository, MapperUtil mapperUtil) {
+    public ClientVendorServiceImpl(ClientVendorRepository clientVendorRepository, MapperUtil mapperUtil, UserService userService) {
         this.clientVendorRepository = clientVendorRepository;
         this.mapperUtil = mapperUtil;
+        this.userService = userService;
     }
 
     @Override
     public List<ClientVendorDTO> listAllClients() {
-        return clientVendorRepository.findAllBy().stream().map(p -> mapperUtil.convert(p, new ClientVendorDTO())).collect(Collectors.toList());
+
+        return clientVendorRepository.findAllByCompany(userService.findCompanyByLoggedInUser()).stream().map(p -> mapperUtil.convert(p, new ClientVendorDTO())).collect(Collectors.toList());
     }
 
     @Override
@@ -42,14 +47,19 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Override
     public void save(ClientVendorDTO dto) {
         dto.setEnabled(true);
+        dto.setCompany(userService.findCompanyByLoggedInUser());
         clientVendorRepository.save(mapperUtil.convert(dto, new ClientVendor()));
     }
 
     @Override
     public ClientVendorDTO update(ClientVendorDTO dto) {
+
+
         ClientVendor client = clientVendorRepository.findByEmail(dto.getEmail());
         ClientVendor convertedClient = mapperUtil.convert(dto,new ClientVendor());
         convertedClient.setId(client.getId());
+        convertedClient.setEnabled(client.getEnabled());
+        convertedClient.setCompany(userService.findCompanyByLoggedInUser());
         clientVendorRepository.save(convertedClient);
         return findByEmail(dto.getEmail());
     }
@@ -62,10 +72,12 @@ public class ClientVendorServiceImpl implements ClientVendorService {
 
     @Override
     public List<ClientVendorDTO> findAllByCompanyType(CompanyType companyType) {
-        return clientVendorRepository.findAllByType (companyType)
+        List<ClientVendorDTO> clientVendorList = clientVendorRepository.findAllByTypeAndCompany (companyType,userService.findCompanyByLoggedInUser())
                 .stream()
                 .map(p -> mapperUtil.convert(p, new ClientVendorDTO()))
                 .collect(Collectors.toList());
+
+        return clientVendorList;
 
     }
 

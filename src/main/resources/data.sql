@@ -49,11 +49,6 @@ VALUES (5, '2022-05-16 00:00:00', FALSE, 5, '2022-05-16 00:00:00', TRUE, '05/16/
        (9, '2022-06-12 00:00:00', FALSE, 9, '2022-06-12 00:00:00', TRUE, '06/12/2022', 'S-INV14', 'APPROVED', 'SALE', 3, 4),
        (9, '2022-06-13 00:00:00', FALSE, 9, '2022-06-13 00:00:00', TRUE, '06/13/2022', 'S-INV15', 'APPROVED', 'SALE', 3, 4);
 
--- INSERT INTO product (created_by, created_time, is_deleted, updated_by, updated_time, description, enabled, low_limit_alert, name, new_column, product_status, qty, tax, unit,category_id,company_id)
--- VALUES (4, '2022-05-15 00:00:00', FALSE, 4, '2022-05-15 00:00:00', 'TV', TRUE, 100, 'TV', 1, 'ACTIVE', 50, 8, 'PCS',1,2),
---        (4, '2022-05-15 00:00:00', FALSE, 4, '2022-05-15 00:00:00', 'Computer', TRUE, 0, 'MacBook', 1, 'ACTIVE', 50, 8, 'PCS',2,2),
---        (8, '2022-05-15 00:00:00', FALSE, 8, '2022-05-15 00:00:00', 'Sports', TRUE, 10, 'Shoes', 1, 'ACTIVE', 100, 10, 'PCS',3,3);
-
 
 INSERT INTO product (created_by, created_time, is_deleted, updated_by, updated_time, description, enabled, low_limit_alert, name, new_column, product_status, qty, tax, unit, category_id, company_id)
 VALUES (5, '2022-01-15 00:00:00', FALSE, 5, '2022-01-15 00:00:00', 'Electronics', TRUE, 10, 'TV', 1, 'ACTIVE', 50, 10, 'PCS', 1, 2),
@@ -87,18 +82,6 @@ VALUES ('2022-05-15 00:00:00', 50, 999.99, 50, 1),
        ('2022-05-15 00:00:00', 50, 79.99, 10, 3),
        ('2022-05-17 00:00:00', 50, 99.99, 40, 3),
        ('2022-05-18 00:00:00', 50, 89.99, 50, 3);
-
--- INSERT INTO invoice_product (created_by, created_time, is_deleted, enabled, updated_by, updated_time, name, price, profit, qty, tax, invoice_id, product_id)
--- VALUES (4, '2022-05-16 00:00:00', FALSE, TRUE, 4, '2022-05-16 00:00:00', 'TV',        1000, 10,  5, 7, 1, 1),
---        (4, '2022-05-16 00:00:00', FALSE, TRUE, 4, '2022-05-16 00:00:00', 'MacBook',   2000, 10,  5, 7, 1, 2),
---        (4, '2022-05-16 00:00:00', FALSE, TRUE, 4, '2022-05-16 00:00:00', 'MacBook',   2000, 199, 1, 7, 2, 2),
---        (4, '2022-05-16 00:00:00', FALSE, TRUE, 4, '2022-05-16 00:00:00', 'MacBook',   2000, 199, 1, 7, 3, 2),
---        (4, '2022-05-16 00:00:00', FALSE, TRUE, 4, '2022-05-16 00:00:00', 'MacBook',   2000, 199, 1, 7, 4, 2),
---        (4, '2022-05-16 00:00:00', FALSE, TRUE, 4, '2022-05-16 00:00:00', 'MacBook',   2000, 199, 1, 7, 4, 2),
---        (8, '2022-05-16 00:00:00', FALSE, TRUE, 8, '2022-05-16 00:00:00', 'Shoes',     1000, 199, 10, 7, 5, 3),
---        (8, '2022-05-16 00:00:00', FALSE, TRUE, 8, '2022-05-16 00:00:00', 'MacBook',     1000, 199, 51, 7, 6, 2),
---        (8, '2022-05-16 00:00:00', FALSE, TRUE, 8, '2022-05-16 00:00:00', 'Shoes',     1000, 199, 10, 7, 7, 3);
-
 
 
 INSERT INTO invoice_product (created_by, created_time, is_deleted, enabled, updated_by, updated_time, name, price, profit, qty, tax, invoice_id, product_id)
@@ -164,24 +147,24 @@ VALUES ('2022-01-15 00:00:00', 50, 1000, 50, 1),
 
 
 INSERT INTO payment (created_by, created_time, is_deleted, updated_by, updated_time, amount, institution_id, is_paid, month, year, company_id)
-VALUES (4, '2022-01-16 00:00:00', FALSE, 4, '2022-01-16 00:00:00', 1000, '2', TRUE, 'JAN', '01/15/2022', 2),
-       (4, '2022-02-16 00:00:00', FALSE, 4, '2022-02-16 00:00:00', 1000, '2', TRUE, 'FEB', '02/15/2022', 2),
-       (4, '2022-03-16 00:00:00', FALSE, 4, '2022-03-16 00:00:00', 1000, '2', TRUE, 'MAR', '03/15/2022', 2),
-       (4, '2022-04-16 00:00:00', FALSE, 4, '2022-04-16 00:00:00', 1000, '2', TRUE, 'APR', '04/15/2022', 2),
+VALUES (4, '2022-01-16 00:00:00', FALSE, 4, '2022-01-16 00:00:00', 1000, '2', TRUE, 'JANUARY', '01/15/2022', 2),
+       (4, '2022-02-16 00:00:00', FALSE, 4, '2022-02-16 00:00:00', 1000, '2', TRUE, 'FEBRUARY', '02/15/2022', 2),
+       (4, '2022-03-16 00:00:00', FALSE, 4, '2022-03-16 00:00:00', 1000, '2', TRUE, 'MARCH', '03/15/2022', 2),
+       (4, '2022-04-16 00:00:00', FALSE, 4, '2022-04-16 00:00:00', 1000, '2', TRUE, 'APRIL', '04/15/2022', 2),
        (4, '2022-05-16 00:00:00', FALSE, 4, '2022-05-16 00:00:00', 1000, '2', TRUE, 'MAY', '05/16/2022', 2),
-       (4, '2022-06-16 00:00:00', FALSE, 4, '2022-06-16 00:00:00', 1000, '2', TRUE, 'JUN', '06/16/2022', 2),
-       (8, '2022-01-16 00:00:00', FALSE, 8, '2022-01-16 00:00:00', 1000, '3', TRUE, 'JAN', '01/16/2022', 3),
-       (8, '2022-02-16 00:00:00', FALSE, 8, '2022-02-16 00:00:00', 1000, '3', TRUE, 'FEB', '02/16/2022', 3),
-       (8, '2022-03-16 00:00:00', FALSE, 8, '2022-03-16 00:00:00', 1000, '3', TRUE, 'MAR', '03/16/2022', 3),
-       (8, '2022-04-16 00:00:00', FALSE, 8, '2022-04-16 00:00:00', 1000, '3', TRUE, 'APR', '04/16/2022', 3),
+       (4, '2022-06-16 00:00:00', FALSE, 4, '2022-06-16 00:00:00', 1000, '2', TRUE, 'JUNE', '06/16/2022', 2),
+       (8, '2022-01-16 00:00:00', FALSE, 8, '2022-01-16 00:00:00', 1000, '3', TRUE, 'JANUARY', '01/16/2022', 3),
+       (8, '2022-02-16 00:00:00', FALSE, 8, '2022-02-16 00:00:00', 1000, '3', TRUE, 'FEBRUARY', '02/16/2022', 3),
+       (8, '2022-03-16 00:00:00', FALSE, 8, '2022-03-16 00:00:00', 1000, '3', TRUE, 'MARCH', '03/16/2022', 3),
+       (8, '2022-04-16 00:00:00', FALSE, 8, '2022-04-16 00:00:00', 1000, '3', TRUE, 'APRIL', '04/16/2022', 3),
        (8, '2022-05-16 00:00:00', FALSE, 8, '2022-05-16 00:00:00', 1000, '3', TRUE, 'MAY', '05/16/2022', 3),
-       (8, '2022-06-16 00:00:00', FALSE, 8, '2022-06-16 00:00:00', 1000, '3', TRUE, 'JUN', '06/16/2022', 3),
-       (9, '2022-01-16 00:00:00', FALSE, 9, '2022-01-16 00:00:00', 1000, '4', TRUE, 'JAN', '01/16/2022', 4),
-       (9, '2022-02-16 00:00:00', FALSE, 9, '2022-02-16 00:00:00', 1000, '4', TRUE, 'FEB', '02/16/2022', 4),
-       (9, '2022-03-16 00:00:00', FALSE, 9, '2022-03-16 00:00:00', 1000, '4', TRUE, 'MAR', '03/16/2022', 4),
-       (9, '2022-04-16 00:00:00', FALSE, 9, '2022-04-16 00:00:00', 1000, '4', TRUE, 'APR', '04/16/2022', 4),
+       (8, '2022-06-16 00:00:00', FALSE, 8, '2022-06-16 00:00:00', 1000, '3', TRUE, 'JUNE', '06/16/2022', 3),
+       (9, '2022-01-16 00:00:00', FALSE, 9, '2022-01-16 00:00:00', 1000, '4', TRUE, 'JANUARY', '01/16/2022', 4),
+       (9, '2022-02-16 00:00:00', FALSE, 9, '2022-02-16 00:00:00', 1000, '4', TRUE, 'FEBRUARY', '02/16/2022', 4),
+       (9, '2022-03-16 00:00:00', FALSE, 9, '2022-03-16 00:00:00', 1000, '4', TRUE, 'MARCH', '03/16/2022', 4),
+       (9, '2022-04-16 00:00:00', FALSE, 9, '2022-04-16 00:00:00', 1000, '4', TRUE, 'APRIL', '04/16/2022', 4),
        (9, '2022-05-16 00:00:00', FALSE, 9, '2022-05-16 00:00:00', 1000, '4', TRUE, 'MAY', '05/16/2022', 4),
-       (9, '2022-06-16 00:00:00', FALSE, 9, '2022-06-16 00:00:00', 1000, '4', TRUE, 'JUN', '06/16/2022', 4);
+       (9, '2022-06-16 00:00:00', FALSE, 9, '2022-06-16 00:00:00', 1000, '4', TRUE, 'JUNE', '06/16/2022', 4);
 
 
 INSERT INTO role (enabled, name)
@@ -192,25 +175,28 @@ VALUES (TRUE, 'Root'),
 
 
 INSERT INTO users (created_by, created_time, is_deleted, updated_by, updated_time, email, enabled, first_name, last_name, password, phone, user_status, company_id, role_id)
-VALUES (1, '2021-05-01 00:00:00', FALSE, 1, '2021-05-01 00:00:00', 'root@cydeo.com', TRUE, 'Root', 'RootSurname', 'Abc1', '0000000000', 'ACTIVE', 1, 1),
-       (1, '2021-05-02 00:00:00', FALSE, 1, '2021-05-02 00:00:00', 'admin@company2.com', TRUE, 'Admin1', 'AdminLName1', 'Abc1', '0000000001', 'ACTIVE', 2, 2),
-       (1, '2021-05-03 00:00:00', FALSE, 1, '2021-05-03 00:00:00', 'admin@company3.com', TRUE, 'Admin2', 'AdminLName2', 'Abc1', '0000000002', 'ACTIVE', 3, 2),
-       (1, '2021-05-03 00:00:00', FALSE, 1, '2021-05-03 00:00:00', 'admin@company4.com', TRUE, 'Admin3', 'AdminLName3', 'Abc1', '0000000003', 'ACTIVE', 4, 2),
-       (2, '2021-05-03 00:00:00', FALSE, 2, '2021-05-03 00:00:00', 'manager1@company2.com', TRUE, 'Manager1', 'ManagerLName1', 'Abc1', '0000000004', 'ACTIVE', 2, 3),
-       (2, '2021-05-03 00:00:00', FALSE, 2, '2021-05-03 00:00:00', 'manager2@company2.com', TRUE, 'Manager2', 'ManagerLName2', 'Abc1', '0000000005', 'ACTIVE', 2, 3),
-       (3, '2021-05-03 00:00:00', FALSE, 3, '2021-05-03 00:00:00', 'manager1@comapny3.com', TRUE, 'Manager3', 'ManagerLName3', 'Abc1', '0000000006', 'ACTIVE', 3, 3),
-       (3, '2021-05-03 00:00:00', FALSE, 3, '2021-05-03 00:00:00', 'manager2@company3.com', TRUE, 'Manager4', 'ManagerLName4', 'Abc1', '0000000007', 'ACTIVE', 3, 3),
-       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'manager1@company4.com', TRUE, 'Manager5', 'ManagerLName5', 'Abc1', '0000000008', 'ACTIVE', 4, 3),
-       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'manager2@company4.com', TRUE, 'Manager6', 'ManagerLName6', 'Abc1', '0000000009', 'ACTIVE', 4, 3),
-       (2, '2021-05-04 00:00:00', FALSE, 2, '2021-05-04 00:00:00', 'employee1@company2.com', TRUE, 'Employee1', 'EmployeeLName1', 'Abc1', '0000000010', 'ACTIVE', 2, 4),
-       (2, '2021-05-04 00:00:00', FALSE, 2, '2021-05-04 00:00:00', 'employee2@company2.com', TRUE, 'Employee2', 'EmployeeLName2', 'Abc1', '0000000011', 'ACTIVE', 2, 4),
-       (2, '2021-04-04 00:00:00', FALSE, 2, '2021-05-04 00:00:00', 'employee3@company2.com', TRUE, 'Employee3', 'EmployeeLName3', 'Abc1', '0000000012', 'ACTIVE', 2, 4),
-       (2, '2021-04-04 00:00:00', FALSE, 2, '2021-05-04 00:00:00', 'employee4@company2.com', TRUE, 'Employee4', 'EmployeeLName4', 'Abc1', '0000000013', 'ACTIVE', 2, 4),
-       (3, '2021-05-05 00:00:00', FALSE, 3, '2021-05-04 00:00:00', 'employee1@company3.com', TRUE, 'Employee5', 'EmployeeLName5', 'Abc1', '0000000014', 'ACTIVE', 3, 4),
-       (3, '2021-05-05 00:00:00', FALSE, 3, '2021-05-04 00:00:00', 'employee2@company3.com', TRUE, 'Employee6', 'EmployeeLName6', 'Abc1', '0000000015', 'ACTIVE', 3, 4),
-       (3, '2021-05-05 00:00:00', FALSE, 3, '2021-05-04 00:00:00', 'employee3@company3.com', TRUE, 'Employee7', 'EmployeeLName7', 'Abc1', '0000000016', 'ACTIVE', 3, 4),
-       (3, '2021-05-05 00:00:00', FALSE, 3, '2021-05-04 00:00:00', 'employee4@company3.com', TRUE, 'Employee8', 'EmployeeLName8', 'Abc1', '0000000017', 'ACTIVE', 3, 4),
-       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'employee1@company4.com', TRUE, 'Employee9', 'EmployeeLName9', 'Abc1', '0000000018', 'ACTIVE', 4, 4),
-       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'employee2@company4.com', TRUE, 'Employee10', 'EmployeeLName10', 'Abc1', '0000000019', 'ACTIVE', 4, 4),
-       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'employee3@company4.com', TRUE, 'Employee11', 'EmployeeLName11', 'Abc1', '0000000020', 'ACTIVE', 4, 4),
-       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'employee4@company4.com', TRUE, 'Employee12', 'EmployeeLName12', 'Abc1', '0000000021', 'ACTIVE', 4, 4);
+VALUES (1, '2021-05-01 00:00:00', FALSE, 1, '2021-05-01 00:00:00', 'root@cydeo.com', TRUE, 'Root', 'RootSurname', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000000', 'ACTIVE', 1, 1),
+       (1, '2021-05-02 00:00:00', FALSE, 1, '2021-05-02 00:00:00', 'admin@company2.com', TRUE, 'Admin1', 'AdminLName1', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000001', 'ACTIVE', 2, 2),
+       (1, '2021-05-03 00:00:00', FALSE, 1, '2021-05-03 00:00:00', 'admin@company3.com', TRUE, 'Admin2', 'AdminLName2', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000002', 'ACTIVE', 3, 2),
+       (1, '2021-05-03 00:00:00', FALSE, 1, '2021-05-03 00:00:00', 'admin@company4.com', TRUE, 'Admin3', 'AdminLName3', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000003', 'ACTIVE', 4, 2),
+       (2, '2021-05-03 00:00:00', FALSE, 2, '2021-05-03 00:00:00', 'manager1@company2.com', TRUE, 'Manager1', 'ManagerLName1', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000004', 'ACTIVE', 2, 3),
+       (2, '2021-05-03 00:00:00', FALSE, 2, '2021-05-03 00:00:00', 'manager2@company2.com', TRUE, 'Manager2', 'ManagerLName2', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000005', 'ACTIVE', 2, 3),
+       (3, '2021-05-03 00:00:00', FALSE, 3, '2021-05-03 00:00:00', 'manager1@comapny3.com', TRUE, 'Manager1', 'ManagerLName3', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000006', 'ACTIVE', 3, 3),
+       (3, '2021-05-03 00:00:00', FALSE, 3, '2021-05-03 00:00:00', 'manager2@company3.com', TRUE, 'Manager2', 'ManagerLName4', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000007', 'ACTIVE', 3, 3),
+       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'manager1@company4.com', TRUE, 'Manager1', 'ManagerLName5', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000008', 'ACTIVE', 4, 3),
+       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'manager2@company4.com', TRUE, 'Manager2', 'ManagerLName6', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000009', 'ACTIVE', 4, 3),
+       (2, '2021-05-04 00:00:00', FALSE, 2, '2021-05-04 00:00:00', 'employee1@company2.com', TRUE, 'Employee1', 'EmployeeLName1', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000010', 'ACTIVE', 2, 4),
+       (2, '2021-05-04 00:00:00', FALSE, 2, '2021-05-04 00:00:00', 'employee2@company2.com', TRUE, 'Employee2', 'EmployeeLName2', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000011', 'ACTIVE', 2, 4),
+       (2, '2021-04-04 00:00:00', FALSE, 2, '2021-05-04 00:00:00', 'employee3@company2.com', TRUE, 'Employee3', 'EmployeeLName3', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000012', 'ACTIVE', 2, 4),
+       (2, '2021-04-04 00:00:00', FALSE, 2, '2021-05-04 00:00:00', 'employee4@company2.com', TRUE, 'Employee4', 'EmployeeLName4', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000013', 'ACTIVE', 2, 4),
+       (3, '2021-05-05 00:00:00', FALSE, 3, '2021-05-04 00:00:00', 'employee1@company3.com', TRUE, 'Employee1', 'EmployeeLName5', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000014', 'ACTIVE', 3, 4),
+       (3, '2021-05-05 00:00:00', FALSE, 3, '2021-05-04 00:00:00', 'employee2@company3.com', TRUE, 'Employee2', 'EmployeeLName6', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000015', 'ACTIVE', 3, 4),
+       (3, '2021-05-05 00:00:00', FALSE, 3, '2021-05-04 00:00:00', 'employee3@company3.com', TRUE, 'Employee3', 'EmployeeLName7', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000016', 'ACTIVE', 3, 4),
+       (3, '2021-05-05 00:00:00', FALSE, 3, '2021-05-04 00:00:00', 'employee4@company3.com', TRUE, 'Employee4', 'EmployeeLName8', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000017', 'ACTIVE', 3, 4),
+       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'employee1@company4.com', TRUE, 'Employee1', 'EmployeeLName9', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000018', 'ACTIVE', 4, 4),
+       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'employee2@company4.com', TRUE, 'Employee2', 'EmployeeLName10', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000019', 'ACTIVE', 4, 4),
+       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'employee3@company4.com', TRUE, 'Employee3', 'EmployeeLName11', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000020', 'ACTIVE', 4, 4),
+       (4, '2021-05-13 00:00:00', FALSE, 4, '2021-05-13 00:00:00', 'employee4@company4.com', TRUE, 'Employee4', 'EmployeeLName12', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '0000000021', 'ACTIVE', 4, 4);
+
+-- $2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK
+-- Abc1 // real password

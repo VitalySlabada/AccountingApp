@@ -107,16 +107,15 @@
                     <li class="nav-item mr-2 d-none d-lg-block"><a class="nav-link apptogglefullscreen"
                                                                    id="navbar-fullscreen" href="javascript:;"><i
                             class="ft-maximize font-medium-3"></i></a></li>
-
+<!--                    <li class="nav-item mr-2 d-none d-lg-block" th:text="'Logged in as: '+${#authentication.getPrincipal().getFirstName() + ' ' + #authentication.getPrincipal().getLastName()}"></li>-->
                 </ul>
                 <div class="navbar-brand-center">
                     <div class="navbar-header">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <div class="logo"><a class="logo-text" >
-
-                                    <span ><h3 style="color: #0b2e13">Dashboard</h3></span>
-
+                                <div class="logo"><a class="logo-text" th:href="@{/dashboard}">
+                                    <span ><h3 th:text="${#authentication.getPrincipal().getCompany().getTitle()}" style="color: #0b2e13"></h3></span>
+<!--                                    <span ><h3 style="color: #0b2e13">Dashboard</h3></span>-->
                                     <span ><h3 class="image-ruler login-page-title"></h3></span>
                                 </a></div>
                             </li>
@@ -124,7 +123,7 @@
                     </div>
                 </div>
             </div>
-            <div class="navbar-container main-menu-content center-layout" data-menu="menu-container">
+            <div class="navbar-container main-menu-content center-layout dropleft" data-menu="menu-container">
                 <ul class="navigation-main nav navbar-nav" data-menu="menu-navigation">
                     <li class="dropdown nav-item" data-menu="dropdown"><a
                             class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;"
@@ -132,19 +131,21 @@
                             data-i18n="Apps" class="person" ></span></a>
                         <ul class="dropdown-menu">
                             <li data-menu=""><a class="dropdown-item d-flex align-items-center" href="#"
-                                                data-toggle="dropdown"><i class="ft-archive" style="color: #00b3ff"></i><span
-                                    data-i18n="Chat" style="color: #0e0c28">Account</span></a>
+                                                data-toggle="dropdown">
+<!--                                <i class="ft-archive" style="color: #00b3ff"></i>-->
+                                <span th:text="${#authentication.getPrincipal().getFirstName() + ' ' + #authentication.getPrincipal().getLastName()}" data-i18n="Chat" style="color: #0e0c28"></span></a>
                             </li>
                             <li data-menu=""><a class="dropdown-item d-flex align-items-center"
                                                 href="#"
-                                                data-toggle="dropdown"><i class="ft-alert-circle"
-                                                                          style="color: #00b3ff"></i><span
-                                    data-i18n="Task Board" style="color: #0e0c28">Settings</span></a>
+                                                data-toggle="dropdown">
+<!--                                <i class="ft-alert-circle" style="color: #00b3ff"></i>-->
+                                <span data-i18n="Task Board" style="color: #0e0c28"
+                                    th:text="${#authentication.getPrincipal().getEmail()}"></span></a>
                             </li>
                             <li data-menu=""><a class="dropdown-item d-flex align-items-center"
-                                                data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"
-                                                                          style="color: #00b3ff"></i><span
-                                    data-i18n="Task Board" style="color: #0e0c28">Logout</span></a>
+                                                th:href="@{/logout}" data-toggle="dropdown">
+<!--                                <i class="ft-arrow-right submenu-icon" style="color: #00b3ff"></i>-->
+                                <span data-i18n="Task Board" style="color: #0e0c28">Logout</span></a>
                             </li>
                         </ul>
                     </li>
@@ -165,28 +166,42 @@
     <!-- Horizontal menu content-->
     <div class="navbar-container main-menu-content center-layout" data-menu="menu-container">
         <ul class="navigation-main nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class="dropdown nav-item softer" data-menu="dropdown" style="background: rgba(151,90,255,0.8)"><a
+            <li class="dropdown nav-item softer" data-menu="dropdown" style="background: rgba(151,90,255,0.8)" sec:authorize="hasAnyAuthority('Root','Admin','Manager')"><a
                     class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;"
                     data-toggle="dropdown"><i class="ft-box"></i><span data-i18n="Apps">Management</span></a>
                 <ul class="dropdown-menu">
-                    <li data-menu="" ><a
+                    <li data-menu="" sec:authorize="hasAnyAuthority('Root')"><a
                             class="dropdown-item d-flex align-items-center" th:href="@{/company/list}"
                             data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
                             data-i18n="Email">Company Registration</span></a>
                     </li>
-                    <li data-menu="" ><a
+                    <li data-menu="" sec:authorize="hasAnyAuthority('Root','Admin')"><a
                             class="dropdown-item d-flex align-items-center" th:href="@{/user/add}"
                             data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
                             data-i18n="Chat">User Registration</span></a>
                     </li>
-                    <li data-menu="" ><a th:href="@{/client-vendor/list}"
+                    <li data-menu="" sec:authorize="hasAnyAuthority('Manager')">
+                        <a th:href="@{/client-vendor/list}"
                                          class="dropdown-item d-flex align-items-center"
                                          data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
                             data-i18n="Task Board">Client/Vendor Registration</span></a>
                     </li>
+                    <li data-menu="" sec:authorize="hasAnyAuthority('Root')">
+                        <a th:href="@{/report/payment}"
+                           class="dropdown-item d-flex align-items-center"
+                           data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
+                                data-i18n="Task Board">Membership Payment Report</span></a>
+                    </li>
+
+                    <li data-menu="" sec:authorize="hasAnyAuthority('Manager')">
+                        <a th:href="@{/payment/list}"
+                           class="dropdown-item d-flex align-items-center"
+                           data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
+                                data-i18n="Task Board">Membership Payment</span></a>
+                    </li>
                 </ul>
             </li>
-            <li class="dropdown nav-item softer" data-menu="dropdown" style="background: rgba(10,158,103,0.8)" ><a
+            <li class="dropdown nav-item softer" data-menu="dropdown" style="background: rgba(10,158,103,0.8)" sec:authorize="hasAnyAuthority('Manager')"><a
                     class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;"
                     data-toggle="dropdown"><i class="ft-aperture"></i><span
                     data-i18n="UI Kit">Stock Management</span></a>
@@ -201,15 +216,14 @@
                     </li>
                 </ul>
             </li>
-            <li class="dropdown nav-item softer" data-menu="dropdown" style="background: rgba(191,162,122,0.8)" ><a
+            <li class="dropdown nav-item softer" data-menu="dropdown" style="background: rgba(191,162,122,0.8)" sec:authorize="hasAnyAuthority('Manager','Employee')"><a
                     class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;"
                     data-toggle="dropdown"><i class="ft-briefcase"></i><span data-i18n="Components">Invoices</span></a>
                 <ul class="dropdown-menu">
 
                     <li data-menu=""><a class="dropdown-item d-flex align-items-center"
                                         th:href="@{/invoice/purchaseInvoiceList}" data-toggle="dropdown"><i
-                            class="ft-arrow-right submenu-icon"></i>
-                        <span data-i18n="Grid">Purchase Invoice</span></a>
+                            class="ft-arrow-right submenu-icon"></i><span data-i18n="Grid">Purchase Invoice</span></a>
                     </li>
                     <li data-menu=""><a class="dropdown-item d-flex align-items-center"
                                         th:href="@{/invoice/salesInvoiceList}" data-toggle="dropdown"><i
@@ -218,40 +232,25 @@
                     </li>
                 </ul>
             </li>
-            <li class="dropdown nav-item softer" data-menu="dropdown" style="background: rgba(213,142,178,0.8)" ><a
+            <li class="dropdown nav-item softer" data-menu="dropdown" style="background: rgba(213,142,178,0.8)" sec:authorize="hasAnyAuthority('Manager','Employee')"><a
                     class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;"
                     data-toggle="dropdown"><i class="ft-bar-chart"></i><span data-i18n="Components">Reporting</span></a>
                 <ul class="dropdown-menu">
 
-                    <li data-menu="" ><a
+                    <li data-menu="" sec:authorize="hasAnyAuthority('Manager','Employee')"><a
                             class="dropdown-item d-flex align-items-center" th:href="@{/report/stock}"
                             data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
-                            data-i18n="Chat">Stock Report</span></a>
+                            data-i18n="Email">Report Invoices </span></a>
                     </li>
-
-                    <li data-menu="" ><a
+                    <li data-menu="" sec:authorize="hasAnyAuthority('Manager')"><a
                             class="dropdown-item d-flex align-items-center" th:href="@{/report/profit}"
                             data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
-                            data-i18n="Chat">Profit / Loss Report </span></a>
+                            data-i18n="Chat">Report Profit/Loss</span></a>
                     </li>
 
                 </ul>
             </li>
-            <li class="dropdown nav-item softer" data-menu="dropdown" style="background: rgba(213,217,139,0.8)" ><a
-                    class="dropdown-toggle nav-link d-flex align-items-center" href="javascript:;"
-                    data-toggle="dropdown"><i class="ft-archive"></i><span data-i18n="Components">Administration</span></a>
-                <ul class="dropdown-menu">
 
-                    <li data-menu=""><a th:href="@{/payment/list}" class="dropdown-item d-flex align-items-center"
-                                        data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
-                            data-i18n="Grid">MemberShip Payment</span></a>
-                    </li>
-                    <li data-menu=""><a class="dropdown-item d-flex align-items-center"
-                                        data-toggle="dropdown"><i class="ft-arrow-right submenu-icon"></i><span
-                            data-i18n="Typography">Log Document</span></a>
-                    </li>
-                </ul>
-            </li>
         </ul>
     </div>
 </div>
@@ -260,7 +259,7 @@
 <!-- end left sidebar -->
 
 <footer class="footer undefined undefined" th:fragment="page_footer">
-    <p class="clearfix text-muted m-0"><span>Copyright &copy; 2021 &nbsp;</span><a
+    <p class="clearfix text-muted m-0"><span>Copyright &copy; 2022 &nbsp;</span><a
             th:target="_blank" id="pixinventLink">CYDEO</a><span
             class="d-none d-sm-inline-block">, All rights reserved.</span>
     </p>

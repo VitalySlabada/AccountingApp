@@ -3,7 +3,10 @@
 <!-- BEGIN : Head-->
 <head>
     <head th:replace="fragments :: page_head"/>
-    <title>Dashboard</title>
+        <a  th:href="@{/return/dashboard}"
+            class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
+            type="submit" name="action" value="delete">Delete
+        </a>
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/logos/logo-color-big.png}">
     <style>
 
@@ -210,7 +213,6 @@
                                                   th:text="${rates.getRates().getJpy()}" ></span>
                                         </li>
                                     </ul>
-                                    <button type="button" class="btn btn-primary mr-2">Profile</button>
                                 </div>
                             </div>
                         </div>
@@ -224,7 +226,12 @@
 </div>
 <!-- ////////////////////////////////////////////////////////////////////////////-->
 </div>
-<footer th:replace="fragments :: page_footer"></footer>
+<footer th:replace="fragments :: page_footer">
+    <p class="clearfix text-muted m-0"><span>Copyright &copy; 2022 &nbsp;</span><a
+            th:target="_blank" id="pixinventLink">CYDEO</a><span
+            class="d-none d-sm-inline-block">, All rights reserved.</span>
+    </p>
+</footer>
 <div class="sidenav-overlay"></div>
 <!-- BEGIN PAGE LEVEL JS-->
 <script th:src="@{/js/dashboard2.js}"></script>
@@ -241,4 +248,4 @@
 </script>
 </body>
 <!-- END : Body-->
-</html>html>
+</html>
